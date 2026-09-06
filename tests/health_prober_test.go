@@ -54,8 +54,9 @@ func TestHealthProberHTTP(t *testing.T) {
 	defer cancel()
 
 	reg.UpdateStatus(registered.Name, registered.ID, registry.StatusUnhealthy, "initial error")
-	if registered.Status != registry.StatusUnhealthy {
-		t.Fatalf("expected status UNHEALTHY, got %s", registered.Status)
+	instAfterUpdate, ok := reg.GetInstance(registered.Name, registered.ID)
+	if !ok || instAfterUpdate.Status != registry.StatusUnhealthy {
+		t.Fatalf("expected status UNHEALTHY, got %v", instAfterUpdate)
 	}
 
 	go prober.Start(ctx)

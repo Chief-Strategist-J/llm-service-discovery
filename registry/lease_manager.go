@@ -38,6 +38,11 @@ func (lm *LeaseManager) sweep() {
 	snapshot := lm.registry.Snapshot()
 
 	for _, inst := range snapshot {
+		// Static seed catalog services are monitored via ActiveProber and do not send heartbeats
+		if inst.Metadata != nil && inst.Metadata["source"] == "seed-catalog" {
+			continue
+		}
+
 		elapsed := now.Sub(inst.LastHeartbeat)
 
 		if elapsed > lm.config.EvictionTTL {
