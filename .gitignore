@@ -1,0 +1,8 @@
+# Binaries
+service-registry
+*.exe
+*.test
+*.out
+.idea/
+.vscode/
+*.swp
